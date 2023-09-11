@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 <style>
 #all {
+  item-align:center;
   border:0;
   margin:150px;
   weight:200px;
