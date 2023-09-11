@@ -37,12 +37,14 @@ request.setCharacterEncoding("UTF-8");
 
 .serve_container {
 	width: 400px;
-	height: 800px; text-align : center;
+	height: 800px;
+	text-align: center;
 	margin-top: 100px;
 	text-align: center;
 }
 
 .inputT {
+	border: solid 1px #f2f2f2;
 	width: 180px;
 	height: 40px;
 	border-radius: 10px;
@@ -64,17 +66,13 @@ request.setCharacterEncoding("UTF-8");
 			action="${contextPath}/movie1/cuslist.do">
 			<div class="main_container">
 				<div class="serve_container">
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
+					<br> <br> <br> <br> <br>
 					<h2>로그인</h2>
-					<br>
-					<input class="inputT" type="text" placeholder=" 아이디 입력"
+					<br> <input class="inputT" type="text" placeholder=" 아이디 입력"
 						name="user_id"></label><br> <input class="inputT"
 						type="password" placeholder=" 비밀번호 입력" name="user_pw"></label> </label> <br>
-					<br><br> <input class="login" type="submit" value="로그인"> <br>
+					<br>
+					<br> <input class="login" type="submit" value="로그인"> <br>
 				</div>
 			</div>
 		</form>
