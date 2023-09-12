@@ -14,29 +14,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
-
 @WebServlet("/movie1/*")
 public class MovieController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	MoviesDao moviesdao;
 	ReservationDao reservationDao;
 	Reservation reservation;
-	int MAX_ROW=5;
-	int MAX_COL=9;
+	int MAX_ROW = 5;
+	int MAX_COL = 9;
 	String[][] map = new String[MAX_ROW][MAX_COL];
 
 	public void init(ServletConfig config) throws ServletException {
 		moviesdao = new MoviesDao();
-		reservationDao= new ReservationDao();
+		reservationDao = new ReservationDao();
 		reservation = new Reservation();
-		System.out.println("MemberDAO init »ý¼ºÀÚ »ý¼º");
+		System.out.println("MemberDAO init ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 	}
 
 	public void destroy() {
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
 			doHandle(request, response);
 		} catch (Exception e) {
@@ -44,7 +43,8 @@ public class MovieController extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		try {
 			doHandle(request, response);
 		} catch (Exception e) {
@@ -60,10 +60,27 @@ public class MovieController extends HttpServlet {
 		String action = request.getPathInfo();
 		HttpSession session = request.getSession();
 		System.out.println("action : " + action);
-		if (action == null || action.equals("/listMembers.do")) {
+		if (action == null || action.equals("/login.do")) {
+			String id = request.getParameter("id");
+			String pwd = request.getParameter("pwd");
+			Member member = new Member();
+			member.setId(id);
+			member.setPwd(pwd);
+			Member member1 = moviesdao.memberSearch(member);
+			if (member1 != null && member1.getId() != null) {
+				session = request.getSession();
+				session.setAttribute("isLogOn", true);
+				session.setAttribute("memberInfo", member1);
+				nextPage="/test01/cuslist.jsp";
+			}else {
+				nextPage="/test01/login.jsp";
+			}
+			    
+		}else if (action.equals("/listMembers.do")) {
 			List<Movie> membersList = moviesdao.printAllMovies();
 			request.setAttribute("membersList", membersList);
 			nextPage="/test01/movieresult.jsp";
+			
 		}else if (action.equals("/addMember.do")){
 			String title = request.getParameter("title");
 			String genre = request.getParameter("genre");
@@ -75,52 +92,45 @@ public class MovieController extends HttpServlet {
 			
 		}else if(action.equals("/modMemberForm.do")) {
 			String id =request.getParameter("id");
-			Integer _id = Integer.parseInt(id);
-			Movie memInfo = moviesdao.findByMovieId(_id);
+			Movie memInfo = moviesdao.findByMovieId(id);
 			request.setAttribute("memInfo", memInfo);
 			nextPage = "/test01/modMemberForm.jsp";
-
 		}else if(action.equals("/delMember.do")) {
 			String id = request.getParameter("id");
 			Integer _id = Integer.parseInt(id);
 			moviesdao.deleteMovie(_id);
 			request.setAttribute("msg","deleted");
 			nextPage= "/movie1/listMembers.do";
-		}else if(action.equals("/cuslist.do")) {  //·Î±×ÀÎ submit
-			nextPage= "/test01/cuslist.jsp";
-		}else if(action.equals("/movieticket.do")){  //¿µÈ­ ¿¹¸ÅÇÏ±â
+		}else if(action.equals("/movieticket.do")){  //ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
 			List<Movie> membersList = moviesdao.printAllMovies();
 			request.setAttribute("membersList", membersList);
 			nextPage="/test01/moviereserlist.jsp";
-		}else if(action.equals("/cusreser.do")) {  //¿µÈ­ ¿¹¸Å 2
+		}else if(action.equals("/cusreser.do")) {  //ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ 2
 			String movieid = request.getParameter("id");
-			Integer _id = Integer.parseInt(movieid);
-			System.out.println(_id);
-			Movie m = moviesdao.findByMovieId(_id);
+			System.out.println(movieid);
+			Movie m = moviesdao.findByMovieId(movieid);
 			System.out.println(m);
-			List<Reservation> reservations = reservationDao.findById(m.getTitle());
-			request.setAttribute("reservations", reservations);
+			request.setAttribute("m", m);
+			session.setAttribute("m", m);
 			nextPage="/test01/seat.jsp";
-		}else if (action.equals("/moviecheck.do")) {
-			String num = request.getParameter("num");
-			int _num = Integer.parseInt(num);
-			Reservation r=reservationDao.findByResId(_num);
-			request.setAttribute("r", r);
-			nextPage = "/test01/reservationresult.jsp";
-		}else if (action.equals("/rowcol.do")) {  // ÁÂ¼®¼±ÅÃ
-			String row = request.getParameter("row");
-			String col = request.getParameter("col");
-			String seatName = row + "-" +col;
-			char[] temp = seatName.toCharArray(); // ÁÂ¼® ¸íÀ» ¹®ÀÚ ¹è¿­·Î º¯È¯
-			int row_ = temp[0] - 'A';
-			int col_ = temp[2] - '1';
-			if("x".equals(map[row_][col_])) {
-				throw new Exception ("ÀÌ¹Ì ¿¹¸ÅµÈ ÁÂ¼®ÀÔ´Ï´Ù..");
-			}
-			map[row_][col_] = "x";
-			// Reservation r = new Reservation(seatName, m.getTitle(), m.getId());
-			//int _resid = reservationDao.save(r);
-			//Reservation r = reservationDao.save(reservation);
+		}else if (action.equals("/rowcol.do")) {  // ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
+			String seat = request.getParameter("seat");
+			Movie m = (Movie) session.getAttribute("m");
+			Member member = (Member) session.getAttribute("memberInfo");
+			Reservation res = new Reservation();
+			res.setMovieid(m.getId());
+			res.setMoviename(m.getTitle());
+			res.setResid(member.getId());
+			res.setSeat(seat);
+			reservationDao.insertReser(res);
+			nextPage="/test01/cuslist.jsp";
+		}else if(action.equals("/movieCheck.do")) {
+			Member member = (Member) session.getAttribute("memberInfo");
+			String id = member.getId();
+			List<Reservation> movieList = reservationDao.findByResId(id);
+			request.setAttribute("movieList", movieList);
+			nextPage="/test01/movieCheckList.jsp";
+			
 		}else {
 			nextPage="/test01/login.jsp";
 		}

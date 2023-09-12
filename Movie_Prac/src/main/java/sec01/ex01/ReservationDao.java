@@ -24,18 +24,18 @@ public class ReservationDao {
 			e.printStackTrace();
 		}
 	}
-	public List<Reservation> findById(String moviename){
+	public List<Reservation> findById(String id){
 		Reservation reservation = new Reservation();
 		try {
-			String sql = "select resid, seat, moviename, movieid from reservation where moviename=?";
+			String sql = "select resid, seat, moviename, movieid from reservation where movieid=?";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, moviename);
+			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
-				reservation.setResid(rs.getInt("resid"));
+				reservation.setResid(rs.getString("resid"));
 				reservation.setSeat(rs.getString("seat"));
 				reservation.setMoviename(rs.getString("moviename"));
-				reservation.setMovieid(rs.getInt("movieid"));
+				reservation.setMovieid(rs.getString("movieid"));
 				reservationlist.add(reservation);
 			}
 			rs.close();
@@ -45,42 +45,43 @@ public class ReservationDao {
 		}
 		return reservationlist;
 	}
-	public Reservation findByResId(int parseInt) {
+	
+	public List<Reservation> findByResId(String id) {
 		Reservation reservation = new Reservation();
 		try {
 			String sql = "select resid, seat, moviename, movieid from reservation where resid = ? ";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, parseInt);
+			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
-				reservation.setResid(rs.getInt("resid"));
+				reservation.setResid(rs.getString("resid"));
 				reservation.setSeat(rs.getString("seat"));
 				reservation.setMoviename(rs.getString("moviename"));
-				reservation.setMovieid(rs.getInt("movieid"));
+				reservation.setMovieid(rs.getString("movieid"));
+				reservationlist.add(reservation);
 			}
 			rs.close();
 			pstmt.close();
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		return reservation;
+		return reservationlist;
 	}
 	
-	public int save (Reservation r) {
-		int _resid = (int)(Math.random()*100000)+1;
+	public int insertReser (Reservation r) {
 		try {
 			String sql = "insert into reservation (resid, seat, moviename, movieid) values (?,?,?,?)";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, _resid);
+			pstmt.setString(1, r.getResid());
 			pstmt.setString(2, r.getSeat());
 			pstmt.setString(3, r.getMoviename());
-			pstmt.setInt(4, r.getMovieid());
+			pstmt.setString(4, r.getMovieid());
 			pstmt.executeUpdate();
 			pstmt.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return _resid;
+		return 1;
 	}
 	
 	public boolean cancel (int cancel) {

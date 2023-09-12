@@ -1,15 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix ="c" uri ="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
+<script>
+var msg="<c:out value='${msg}'/>";
+var url="<c:out value='${url}'/>";
+alert(msg);
+location.href=url;
+</script>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-<form action = "${contextPath}/movie1/moviecheck.do">
-발급번호 : <input type ="text" name ="num">
-<input type = "submit" value="확인">
-</form>
+
 </body>
 </html>
