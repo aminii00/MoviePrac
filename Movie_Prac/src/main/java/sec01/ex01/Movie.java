@@ -1,7 +1,7 @@
 package sec01.ex01;
 
 public class Movie {
-	private int id;
+	private String id;
 	private String title;
 	private String genre;
 	
@@ -10,10 +10,10 @@ public class Movie {
 		this.genre = genre;
 	}
 	public Movie() {}
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getTitle() {
@@ -30,6 +30,7 @@ public class Movie {
 	}
 	@Override
 	public String toString() {
-		return "Movie [영화발급번호 = " + id + " , 영화제목= " + title + " , 장르= " + genre + "]";
+		return "Movie [id=" + id + ", title=" + title + ", genre=" + genre + "]";
 	}
+
 }

@@ -1,27 +1,27 @@
 package sec01.ex01;
 
 public class Reservation {
-	private int resid;
+	private String resid;
 	private String seat;
 	private String moviename;
-	private int movieid;
+	private String movieid;
 	
 	public Reservation() {
 		
 	}
 	
-    public Reservation (String seat, String moviename, int movieid) {
+    public Reservation (String seat, String moviename, String movieid) {
     	super();
     	this.seat = seat;
     	this.moviename = moviename;
     	this.movieid = movieid;
     }
 
-	public int getResid() {
+	public String getResid() {
 		return resid;
 	}
 
-	public void setResid(int resid) {
+	public void setResid(String resid) {
 		this.resid = resid;
 	}
 
@@ -41,11 +41,11 @@ public class Reservation {
 		this.moviename = moviename;
 	}
 
-	public int getMovieid() {
+	public String getMovieid() {
 		return movieid;
 	}
 
-	public void setMovieid(int movieid) {
+	public void setMovieid(String movieid) {
 		this.movieid = movieid;
 	}
 	

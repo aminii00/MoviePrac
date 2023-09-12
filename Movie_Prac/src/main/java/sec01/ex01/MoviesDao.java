@@ -29,6 +29,28 @@ public class MoviesDao {
 			e.printStackTrace();
 		}
 	}
+	
+	public Member memberSearch(Member member) {
+		Member member1 = new Member();
+		try {
+			String sql = "select id, pwd from member where id=? and pwd=?";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member.getId());
+			pstmt.setString(2, member.getPwd());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				member1.setId(rs.getString("id"));
+				member1.setPwd(rs.getString("pwd"));
+			}
+			rs.close();
+			pstmt.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return member1;
+	}
+	
+	
 	public List printAllMovies() {
 		List<Movie> movielist = new ArrayList();
 		try {
@@ -39,7 +61,7 @@ public class MoviesDao {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Movie movie = new Movie();
-				movie.setId(rs.getInt("id"));
+				movie.setId(rs.getString("id"));
 				movie.setTitle(rs.getString("title"));
 				movie.setGenre(rs.getString("genre"));
 				movielist.add(movie);
@@ -51,15 +73,15 @@ public class MoviesDao {
 		}
 		return movielist;
 	}
-	public Movie findByMovieId(int _movie) {
+	public Movie findByMovieId(String _movie) {
 		Movie movie = new Movie();
 		try {
 			String sql = "select id, title, genre from movie where id=?";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, _movie);
+			pstmt.setString(1, _movie);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				movie.setId(rs.getInt("id"));
+				movie.setId(rs.getString("id"));
 			    movie.setTitle(rs.getString("title"));
 			    movie.setGenre(rs.getString("genre"));
 			}

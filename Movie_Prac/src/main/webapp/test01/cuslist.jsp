@@ -15,11 +15,12 @@ request.setCharacterEncoding("UTF-8");
 .main_container {
 	width: 25%;
 	height: auto;
-	margin-left: 40%;
+	margin-left: 37%;
 	text-align: center;
-	background-color: #ffcccc;
-	margin-top: 300px;
+	background-color: pink;
+	margin-top: 280px;
 	border-radius: 50px;
+	border: solid 2px #ff9999;
 }
 
 .selectT {
@@ -37,7 +38,6 @@ request.setCharacterEncoding("UTF-8");
 .serve {
 	width: 99%;
 	height: auto;
-	margin-top: 100px;
 	display: flex;
 	align-items: center;
 	flex-wrap: nowrap;
@@ -52,7 +52,7 @@ request.setCharacterEncoding("UTF-8");
 <div class ="serve">
 <br><br><br>
 <button type ="button" class = "selectT" onclick= "location.href = '${contextPath}/movie1/movieticket.do'">영화 예매하기</button></p>
-<button type ="button" class = "selectT" onclick= "location.href = '${contextPath}/test01/num_form.jsp'">영화 확인하기</button></p>
+<button type ="button" class = "selectT" onclick= "location.href = '${contextPath}/movie1/movieCheck.do'">영화 확인하기</button></p>
 <button type ="button" class = "selectT" onclick= "location.href = '${contextPath}/movie1/MemberForm.do'">예매 취소하기</button></p>
 <button type ="button" class = "selectT" onclick= "location.href ='${contextPath}/movie1/listMembers.do'">관리자모드로 로그인</button></p>
 <button type ="button" class = "selectT" onclick= "location.href ='${contextPath}/movie1/MemberForm.do'">로그아웃</button></p>
